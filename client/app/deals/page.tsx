@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '@/services/api';
 import { Deal } from '@/types';
 import Navbar from '@/components/Navbar';
 import DealCard from '@/components/DealCard';
@@ -19,7 +19,7 @@ export default function DealsPage() {
     useEffect(() => {
         const fetchDeals = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/deals');
+                const res = await api.get('/deals');
                 setDeals(res.data);
             } catch (err) {
                 console.error('Failed to fetch deals', err);
@@ -104,8 +104,8 @@ export default function DealsPage() {
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
                                 className={`flex-shrink-0 px-6 py-3 rounded-xl text-sm font-semibold transition-all ${selectedCategory === cat
-                                        ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
-                                        : 'bg-slate-900 text-slate-400 hover:bg-slate-800 border border-slate-800'
+                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                                    : 'bg-slate-900 text-slate-400 hover:bg-slate-800 border border-slate-800'
                                     }`}
                             >
                                 {cat}

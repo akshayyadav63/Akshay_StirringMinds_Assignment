@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import axios from 'axios';
+import api from '@/services/api';
 import { Deal, Claim } from '@/types';
 import { useAuth } from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
@@ -32,11 +32,11 @@ export default function DealDetailsPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const dealRes = await axios.get(`http://localhost:5000/api/deals/${id}`);
+                const dealRes = await api.get(`/deals/${id}`);
                 setDeal(dealRes.data);
 
                 if (user) {
-                    const claimsRes = await axios.get('http://localhost:5000/api/deals/my-claims');
+                    const claimsRes = await api.get('/deals/my-claims');
                     const isAlreadyClaimed = claimsRes.data.some((c: Claim) => c.deal._id === id);
                     setClaimed(isAlreadyClaimed);
                 }
@@ -63,7 +63,7 @@ export default function DealDetailsPage() {
         setClaiming(true);
         setError('');
         try {
-            await axios.post(`http://localhost:5000/api/deals/${id}/claim`);
+            await api.post(`/deals/${id}/claim`);
             setClaimed(true);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to claim deal');
@@ -174,8 +174,8 @@ export default function DealDetailsPage() {
                                         onClick={handleClaim}
                                         disabled={claiming}
                                         className={`w-full py-4 rounded-2xl font-bold transition-all shadow-xl ${deal.accessLevel === 'restricted' && !user?.isVerified
-                                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed opacity-50'
-                                                : 'bg-indigo-600 text-white hover:bg-indigo-500 active:scale-95 shadow-indigo-600/30'
+                                            ? 'bg-slate-800 text-slate-500 cursor-not-allowed opacity-50'
+                                            : 'bg-indigo-600 text-white hover:bg-indigo-500 active:scale-95 shadow-indigo-600/30'
                                             }`}
                                     >
                                         {claiming ? 'Processing...' : 'Claim Benefit Now'}

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import api from '@/services/api';
 import Navbar from '@/components/Navbar';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User as UserIcon, UserPlus, ArrowRight, Loader2 } from 'lucide-react';
@@ -24,7 +24,7 @@ export default function RegisterPage() {
         setError('');
 
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/register', {
+            const res = await api.post('/auth/register', {
                 name,
                 email,
                 password,

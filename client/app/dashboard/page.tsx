@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import api from '@/services/api';
 import { Claim } from '@/types';
 import Navbar from '@/components/Navbar';
 import { motion } from 'framer-motion';
@@ -38,7 +38,7 @@ export default function DashboardPage() {
         const fetchClaims = async () => {
             if (user) {
                 try {
-                    const res = await axios.get('http://localhost:5000/api/deals/my-claims');
+                    const res = await api.get('/deals/my-claims');
                     setClaims(res.data);
                 } catch (err) {
                     console.error('Failed to fetch claims', err);
@@ -53,7 +53,7 @@ export default function DashboardPage() {
     const handleVerify = async () => {
         setVerifying(true);
         try {
-            const res = await axios.put('http://localhost:5000/api/auth/verify');
+            const res = await api.put('/auth/verify');
             verify(res.data);
         } catch (err) {
             console.error('Verification failed', err);
@@ -87,8 +87,8 @@ export default function DashboardPage() {
                                 <p className="text-slate-500 text-sm mb-6">{user.email}</p>
 
                                 <div className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold border ${user.isVerified
-                                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
-                                        : 'bg-amber-500/10 border-amber-500/20 text-amber-500'
+                                    ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
+                                    : 'bg-amber-500/10 border-amber-500/20 text-amber-500'
                                     }`}>
                                     {user.isVerified ? <ShieldCheck size={14} /> : <ShieldAlert size={14} />}
                                     {user.isVerified ? 'VERIFIED FOUNDER' : 'UNVERIFIED'}
@@ -205,8 +205,8 @@ export default function DashboardPage() {
 
                                             <div className="flex items-center gap-6">
                                                 <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${claim.status === 'approved'
-                                                        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
-                                                        : 'bg-amber-500/10 border-amber-500/20 text-amber-500'
+                                                    ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'
+                                                    : 'bg-amber-500/10 border-amber-500/20 text-amber-500'
                                                     }`}>
                                                     {claim.status === 'approved' ? (
                                                         <><CheckCircle2 size={12} /> Approved</>
